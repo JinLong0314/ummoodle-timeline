@@ -19,8 +19,8 @@ UMMoodle Timeline 是一个 Chrome 扩展程序，旨在帮助澳门大学的学
 
 我们高度重视用户的隐私和数据安全。UMMoodle Timeline 不会存储或传输您的个人信息。所有数据同步操作都在您的设备上本地进行。
 
-- [隐私政策](https://yourusername.github.io/ummoodle-timeline-policies/privacy-policy.html)
-- [服务条款](https://yourusername.github.io/ummoodle-timeline-policies/terms-of-service.html)
+- [隐私政策](https://jinlong0314.github.io/ummoodle-timeline-policies/privacy-policy.html)
+- [服务条款](https://jinlong0314.github.io/ummoodle-timeline-policies/terms-of-service.html)
 
 ## 技术栈
 
