@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+  "name": "UMMoodle Timeline",
+  "version": "1.0",
+  "description": "提取UMMoodle网站上的Timeline详细信息并同步到Google日历和Tasks",
+  "permissions": [
+    "activeTab",
+    "*://ummoodle.um.edu.mo/*",
+    "storage",
+    "identity",
+    "https://www.googleapis.com/*",
+    "https://accounts.google.com/o/oauth2/auth",
+    "https://tasks.googleapis.com/*"
+  ],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["*://ummoodle.um.edu.mo/*"],
+      "js": ["content.js"]
+    }
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "oauth2": {
+    "client_id": "YOUR_CORRECT_CLIENT_ID.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/calendar",
+      "https://www.googleapis.com/auth/tasks"
+    ]
+  }
+}
