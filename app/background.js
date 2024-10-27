@@ -1,7 +1,7 @@
 let timelineData = null;
 let accessToken = '';
-const clientId = '1090132675568-rc173g7j9hj7pje8n0d9c21unj06hta3.apps.googleusercontent.com';
-const clientSecret = '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';
+const clientId = '';
+const clientSecret = '';
 const redirectUri = chrome.identity.getRedirectURL();
 
 console.log("Redirect URI:", chrome.identity.getRedirectURL());
