@@ -1,0 +1,6 @@
+app/config.js
+# Ignore all config files
+**/config.js
+
+# Ignore environment files
+.env
