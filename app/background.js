@@ -1,7 +1,12 @@
 import { CLIENT_ID, CLIENT_SECRET } from './config.js';
 let timelineData = null;
 let accessToken = '';
+<<<<<<< HEAD
 const clientId = CLIENT_ID;
+=======
+const clientId = '';
+const clientSecret = '';
+>>>>>>> 2de9e11706f6580321a9d00e96385186a6ed2e21
 const redirectUri = chrome.identity.getRedirectURL();
 
 console.log("Redirect URI:", chrome.identity.getRedirectURL());
