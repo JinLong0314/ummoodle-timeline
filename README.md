@@ -36,7 +36,7 @@ UMMoodle Timeline 是一个 Chrome 扩展程序，旨在帮助澳门大学的学
 
 如果您有任何问题或建议，请通过以下方式联系我们：
 
-- GitHub Issues：[创建新 issue](https://github.com/yourusername/ummoodle-timeline/issues)
+- GitHub Issues：[创建新 issue](https://github.com/JinLong0314/ummoodle-timeline/issues)
 
 ## 许可证
 
