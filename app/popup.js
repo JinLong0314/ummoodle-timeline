@@ -1,21 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     loadTimelineData();
 
-    document.getElementById('refresh-button').addEventListener('click', function() {
-        const button = this;
-        button.disabled = true;
-        button.textContent = '刷新中...';
-        chrome.runtime.sendMessage({action: "refreshData"}, function(response) {
-            if (response && response.success) {
-                loadTimelineData();
-            } else {
-                alert('刷新数据失败，请稍后再试。');
-            }
-            button.disabled = false;
-            button.textContent = '刷新数据';
-        });
-    });
-
     // 设置按钮和模态框
     const settingsButton = document.getElementById('settings-button');
     const settingsModal = document.getElementById('settings-modal');
@@ -76,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const syncButton = document.createElement('button');
     syncButton.textContent = '同步到Google日历和Tasks';
     syncButton.id = 'sync-button';
-    document.body.insertBefore(syncButton, document.getElementById('timeline-container'));
 
     syncButton.addEventListener('click', function() {
         chrome.storage.local.get(['timelineData'], function(result) {

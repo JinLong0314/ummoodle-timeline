@@ -1,4 +1,5 @@
-import { clientId, clientSecret } from './config.js';
+const clientId = '';
+const clientSecret = '';
 let timelineData = null;
 let accessToken = '';
 const redirectUri = chrome.identity.getRedirectURL();
