@@ -30,7 +30,7 @@ UMMoodle Timeline 是一个 Chrome 扩展程序，旨在帮助澳门大学的学
 
 ## 贡献
 
-我们欢迎社区贡���！如果您有任何改进建议或发现了 bug，请创建一个 issue 或提交 pull request。
+我们欢迎社区贡献！如果您有任何改进建议或发现了 bug，请创建一个 issue 或提交 pull request。
 
 ## 联系我们
 
