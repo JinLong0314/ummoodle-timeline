@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "UMMoodle Timeline",
-  "version": "1.0",
+  "version": "2.0",
   "description": "提取UMMoodle网站上的Timeline详细信息并同步到Google日历和Tasks",
   "permissions": [
     "activeTab",
