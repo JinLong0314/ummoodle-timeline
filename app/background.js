@@ -1,7 +1,6 @@
+import { clientId, clientSecret } from './config.js';
 let timelineData = null;
 let accessToken = '';
-const clientId = '';
-const clientSecret = '';
 const redirectUri = chrome.identity.getRedirectURL();
 
 console.log("Redirect URI:", chrome.identity.getRedirectURL());
@@ -101,22 +100,66 @@ function syncToGoogleCalendar(events) {
     return;
   }
 
+  console.log("Syncing events to Google Calendar:", events);
+
   events.forEach(event => {
+    if (!event.date || !event.time) {
+      console.error("Invalid event data:", event);
+      return;
+    }
+
     checkExistingEvent(event).then(exists => {
       if (!exists) {
         addEventToCalendar(event);
-        addEventToTasks(event);
       } else {
         console.log(`Event "${event.title}" already exists in the calendar.`);
       }
+    }).catch(error => {
+      console.error("Error during event sync:", error);
     });
   });
 }
 
 function checkExistingEvent(event) {
-  const eventDateTime = new Date(event.date + ' ' + event.time);
-  const timeMin = new Date(eventDateTime.getTime() - 24 * 60 * 60 * 1000).toISOString(); // 1 day before
-  const timeMax = new Date(eventDateTime.getTime() + 24 * 60 * 60 * 1000).toISOString(); // 1 day after
+  console.log("Checking existing event:", event);
+  
+  // 验证日期和时间
+  if (!event.date || !event.time) {
+    console.error("Invalid event date or time:", event);
+    return Promise.resolve(false);
+  }
+
+  let eventDateTime;
+  try {
+    // 解析日期和时间
+    const [timePart, ampm] = event.time.split(/\s+/);
+    let [hours, minutes] = timePart.split(':').map(Number);
+
+    // 处理 AM/PM
+    if (ampm) {
+      if (ampm.toLowerCase() === 'pm' && hours !== 12) {
+        hours += 12;
+      } else if (ampm.toLowerCase() === 'am' && hours === 12) {
+        hours = 0;
+      }
+    }
+
+    // 创建日期对象
+    const [day, month, year] = event.date.split(/\s+/);
+    const monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(month);
+    
+    eventDateTime = new Date(year, monthIndex, day, hours, minutes);
+
+    if (isNaN(eventDateTime.getTime())) {
+      throw new Error("Invalid date");
+    }
+  } catch (error) {
+    console.error("Error parsing event date:", error, event);
+    return Promise.resolve(false);
+  }
+
+  const timeMin = new Date(eventDateTime.getTime() - 24 * 60 * 60 * 1000).toISOString();
+  const timeMax = new Date(eventDateTime.getTime() + 24 * 60 * 60 * 1000).toISOString();
 
   const url = `https://www.googleapis.com/calendar/v3/calendars/primary/events?timeMin=${timeMin}&timeMax=${timeMax}&q=${encodeURIComponent(event.title)}`;
 
@@ -128,11 +171,20 @@ function checkExistingEvent(event) {
   .then(response => response.json())
   .then(data => {
     if (data.items && data.items.length > 0) {
-      // Check if any of the events match exactly
-      return data.items.some(item => 
-        item.summary === event.title &&
-        new Date(item.start.dateTime).getTime() === eventDateTime.getTime()
-      );
+      return data.items.some(item => {
+        // 检查标题、时间和内容是否都匹配
+        const isSameTitle = item.summary === event.title;
+        const isSameTime = new Date(item.start.dateTime).getTime() === eventDateTime.getTime();
+        const isSameDescription = item.description === event.course;
+        
+        console.log("Comparing event:", {
+          title: { calendar: item.summary, new: event.title },
+          time: { calendar: new Date(item.start.dateTime), new: eventDateTime },
+          description: { calendar: item.description, new: event.course }
+        });
+        
+        return isSameTitle && isSameTime && isSameDescription;
+      });
     }
     return false;
   })
@@ -143,7 +195,35 @@ function checkExistingEvent(event) {
 }
 
 function addEventToCalendar(event) {
-  const eventDateTime = new Date(event.date + ' ' + event.time);
+  let eventDateTime;
+  try {
+    // 解析日期和时间
+    const [timePart, ampm] = event.time.split(/\s+/);
+    let [hours, minutes] = timePart.split(':').map(Number);
+
+    // 处理 AM/PM
+    if (ampm) {
+      if (ampm.toLowerCase() === 'pm' && hours !== 12) {
+        hours += 12;
+      } else if (ampm.toLowerCase() === 'am' && hours === 12) {
+        hours = 0;
+      }
+    }
+
+    // 创建日期对象
+    const [day, month, year] = event.date.split(/\s+/);
+    const monthIndex = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'].indexOf(month);
+    
+    eventDateTime = new Date(year, monthIndex, day, hours, minutes);
+
+    if (isNaN(eventDateTime.getTime())) {
+      throw new Error("Invalid date");
+    }
+  } catch (error) {
+    console.error("Error parsing event date:", error, event);
+    return;
+  }
+
   const calendarEvent = {
     'summary': event.title,
     'description': event.course,
@@ -152,16 +232,18 @@ function addEventToCalendar(event) {
       'timeZone': 'Asia/Macau'
     },
     'end': {
-      'dateTime': new Date(eventDateTime.getTime() + 60 * 1000 * 2).toISOString(), // 假设事件持续1小时
+      'dateTime': new Date(eventDateTime.getTime() + 60 * 60 * 1000).toISOString(),
       'timeZone': 'Asia/Macau'
     },
     'reminders': {
       'useDefault': false,
       'overrides': [
-        {'method': 'popup', 'minutes': 24 * 60} // 设置提醒时间为24小时前（1天）
+        {'method': 'popup', 'minutes': 24 * 60}
       ]
     }
   };
+
+  console.log("Adding event to calendar:", calendarEvent);
 
   fetch('https://www.googleapis.com/calendar/v3/calendars/primary/events', {
     method: 'POST',
@@ -182,7 +264,7 @@ function addEventToCalendar(event) {
     console.error('Error:', error);
     if (error.message.includes('401')) {
       console.log("Token might be expired, refreshing...");
-      promptForAccessToken();
+      handleExpiredToken();
     }
   });
 }
@@ -191,42 +273,4 @@ function addEventToCalendar(event) {
 function handleExpiredToken() {
   accessToken = '';
   getAuthToken();
-}
-
-function addEventToTasks(event) {
-  const taskList = {
-    'title': 'UMMoodle Timeline'
-  };
-
-  // 首先创建或获取任务列表
-  fetch('https://tasks.googleapis.com/tasks/v1/users/@me/lists', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Bearer ' + accessToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(taskList)
-  })
-  .then(response => response.json())
-  .then(data => {
-    const listId = data.id;
-    const task = {
-      'title': event.title,
-      'notes': `Course: ${event.course}\nDate: ${event.date}\nTime: ${event.time}`,
-      'due': new Date(event.date + ' ' + event.time).toISOString()
-    };
-
-    // 然后在任务列表中创建任务
-    return fetch(`https://tasks.googleapis.com/tasks/v1/lists/${listId}/tasks`, {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + accessToken,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(task)
-    });
-  })
-  .then(response => response.json())
-  .then(data => console.log('Task created: ', data))
-  .catch(error => console.error('Error creating task:', error));
 }

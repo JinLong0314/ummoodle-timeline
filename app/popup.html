@@ -13,6 +13,7 @@
             background-color: #F5F5F5;
             margin: 0;
             font-size: 14px;
+            min-height: 400px;
         }
         h1 {
             text-align: center;
@@ -204,21 +205,30 @@
         #settings-modal {
             display: none;
             position: fixed;
-            z-index: 1;
+            z-index: 1000;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(3px);
             overflow: auto;
-            background-color: rgba(0,0,0,0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
         .modal-content {
             background-color: #fefefe;
             margin: 15% auto;
             padding: 20px;
-            border: 1px solid #888;
+            border: none;
             width: 80%;
+            max-width: 500px;
+            min-height: 300px;
             border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            position: relative;
+            transform-origin: center;
+            z-index: 1001;
         }
         .close {
             color: #aaa;
@@ -226,19 +236,23 @@
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
+            transition: color 0.2s ease;
         }
-        .close:hover,
-        .close:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
+        .close:hover {
+            color: #000;
         }
         #completed-events-list {
             list-style-type: none;
             padding: 0;
+            margin-top: 10px;
+            min-height: 200px;
         }
         #completed-events-list li {
-            margin-bottom: 8px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 4px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -247,9 +261,83 @@
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 4px 8px;
+            padding: 5px 10px;
             border-radius: 4px;
             cursor: pointer;
+        }
+        .uncomplete-button:hover {
+            background-color: #45a049;
+        }
+        /* 已完成事件列表样式 */
+        #completed-events-list {
+            padding: 0;
+            margin: 0;
+        }
+
+        .no-completed-events {
+            padding: 10px;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .completed-event-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .completed-event-info {
+            flex: 1;
+            min-width: 0; /* 防止文本溢出 */
+            margin-right: 12px;
+        }
+
+        .completed-event-title {
+            font-weight: 500;
+            color: #212529;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .completed-event-course {
+            font-size: 12px;
+            color: #6c757d;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .uncomplete-button {
+            padding: 6px 12px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: background-color 0.2s;
+        }
+
+        .uncomplete-button:hover {
+            background-color: #c82333;
+        }
+
+        /* 当模态框显示时的样式 */
+        #settings-modal.show {
+            opacity: 1;
         }
     </style>
 </head>
@@ -260,7 +348,7 @@
     <div id="timeline-container"></div>
 
     <div id="settings-modal">
-        <div class="modal-content"></div>
+        <div class="modal-content">
             <span class="close">&times;</span>
             <h2>管理已完成的事件</h2>
             <ul id="completed-events-list"></ul>
