@@ -40,10 +40,12 @@ UMMoodle Timeline 是一个 Chrome 扩展程序，旨在帮助澳门大学的学
 
 ## 如何使用
 
-1. 从 Chrome 网上应用店安装 UMMoodle Timeline 扩展。
-2. 登录您的 UMMoodle 账户。
-3. 点击扩展图标，授权访问您的 Google 日历。
-4. 享受自动同步的便利！
+1. 安装 UMMoodle Timeline 扩展。
+2. 取得重定向 URI。
+3. 将OAuth 2.0 客户端 ID 和密钥填入文件。
+4. 登录您的 UMMoodle 账户。
+5. 点击扩展图标，授权访问您的 Google 日历。
+6. 享受自动同步的便利！
 
 ## 隐私和安全
 

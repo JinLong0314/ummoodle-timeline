@@ -1,5 +1,5 @@
-const clientId = '';
-const clientSecret = '';
+const clientId = 'YOUR_CLIENT_ID';
+const clientSecret = 'YOUR_CLIENT_SECRET';
 let timelineData = null;
 let accessToken = '';
 const redirectUri = chrome.identity.getRedirectURL();
