@@ -8,6 +8,36 @@ UMMoodle Timeline 是一个 Chrome 扩展程序，旨在帮助澳门大学的学
 2. **Google 日历集成**: 将 UMMoodle 的事件无缝同步到您的 Google 日历。
 3. **直观界面**: 清晰、简洁的用户界面，轻松查看和管理所有学习事件。
 
+## 使用指南
+
+### 安装依赖
+本扩展不需要额外的依赖，直接使用原生 JavaScript。
+
+### 使用方法
+1. 克隆仓库：
+   ```bash
+   git clone https://github.com/JinLong0314/ummoodle-timeline.git
+   cd ummoodle-timeline
+   ```
+   
+2. 在 Chrome 中加载扩展：
+   - 打开 Chrome 扩展管理页面 (chrome://extensions/)
+   - 启用"开发者模式"
+   - 点击"加载已解压的扩展程序"
+   - 选择项目的 `app` 目录
+
+3. 取得重定向 URI：
+   - 打开 Chrome 扩展管理页面 (chrome://extensions/)
+   - 点击"视图背景页"
+   - 在控制台复制Redirect URI 形如：https://*.chromiumapp.org/
+   - 将URI填入 Google Cloud Console
+
+4. 将OAuth 2.0 客户端 ID 和密钥填入文件：
+   ```javascript
+   const clientId = 'YOUR_CLIENT_ID';
+   const clientSecret = 'YOUR_CLIENT_SECRET';
+   ```
+
 ## 如何使用
 
 1. 从 Chrome 网上应用店安装 UMMoodle Timeline 扩展。

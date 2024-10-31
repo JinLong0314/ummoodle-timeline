@@ -16,7 +16,7 @@
         h1, h2 {
             color: #2c3e50;
         }
-        ul {
+        ul, ol {
             padding-left: 20px;
         }
         a {
@@ -25,6 +25,18 @@
         }
         a:hover {
             text-decoration: underline;
+        }
+        pre {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: monospace;
+            background-color: #f5f5f5;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
     </style>
 </head>
@@ -37,6 +49,38 @@
         <li><strong>自动同步</strong>: 从 UMMoodle 平台自动提取课程时间线和截止日期。</li>
         <li><strong>Google 日历集成</strong>: 将 UMMoodle 的事件无缝同步到您的 Google 日历。</li>
         <li><strong>直观界面</strong>: 清晰、简洁的用户界面，轻松查看和管理所有学习事件。</li>
+    </ol>
+
+    <h2>使用指南</h2>
+    <h3>安装依赖</h3>
+    <p>本扩展不需要额外的依赖，直接使用原生 JavaScript。</p>
+
+    <h3>使用方法</h3>
+    <ol>
+        <li>克隆仓库：
+            <pre><code>git clone https://github.com/JinLong0314/ummoodle-timeline.git
+cd ummoodle-timeline</code></pre>
+        </li>
+        <li>在 Chrome 中加载扩展：
+            <ul>
+                <li>打开 Chrome 扩展管理页面 (chrome://extensions/)</li>
+                <li>启用"开发者模式"</li>
+                <li>点击"加载已解压的扩展程序"</li>
+                <li>选择项目的 <code>app</code> 目录</li>
+            </ul>
+        </li>
+        <li>取得重定向 URI：
+            <ul>
+                <li>打开 Chrome 扩展管理页面 (chrome://extensions/)</li>
+                <li>点击"视图背景页"</li>
+                <li>在控制台复制Redirect URI 形如：https://*.chromiumapp.org/</li>
+                <li>将URI填入 Google Cloud Console</li>
+            </ul>
+        </li>
+        <li>将OAuth 2.0 客户端 ID 和密钥填入文件：
+            <pre><code>const clientId = 'YOUR_CLIENT_ID';
+const clientSecret = 'YOUR_CLIENT_SECRET';</code></pre>
+        </li>
     </ol>
 
     <h2>如何使用</h2>
@@ -71,7 +115,7 @@
     </ul>
 
     <h2>许可证</h2>
-    <p>本项目采用 <a href="LICENSE">MIT 许可证</a>。</p>
+    <p>本项目采用 <a href="LICENSE">MIT Non-Commercial License</a>。该许可证允许您自由使用、修改和分发本软件，但不允许用于商业目的。</p>
 
     <hr>
 
