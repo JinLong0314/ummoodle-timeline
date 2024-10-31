@@ -40,7 +40,7 @@ UMMoodle Timeline 是一个 Chrome 扩展程序，旨在帮助澳门大学的学
 
 ## 许可证
 
-本项目采用 [MIT 许可证](LICENSE)。
+本项目采用 [MIT Non-Commercial License](LICENSE)。该许可证允许您自由使用、修改和分发本软件，但不允许用于商业目的。
 
 ---
 
